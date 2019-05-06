@@ -12,3 +12,11 @@ html {
       color: bisque;
   }
 
+  .book-con {
+      display: none;
+  }
+
+  h2 {
+      display: none;
+  }
+

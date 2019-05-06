@@ -65,7 +65,7 @@ session_start();
         $daysBooked = $interval->format('%R%a');
         //place holder for booking cost
         $value;
-
+   
         //switch to adjust cost for different hotel rates
         switch($_POST['hotelname']){
             case "Goudini Spa" :
@@ -86,31 +86,44 @@ session_start();
             default :
                 echo "Invalid booking.";
         }
-
+    
         //display booking info for user
-        echo "<br> First Name : " . $_SESSION['firstname'] . "<br>" . "Last Name : " . $_SESSION['surname'] . "<br>" . "Hotel Name : " . $_SESSION['hotelname'] . "<br>" . "Check-In Date : " . $_SESSION['indate'] . "<br>" . "Check-Out Date : " . $_SESSION['outdate'] . "<br>" . $interval->format("%R%a days") . "<br>" . "Total : " . $value . "<br>";
-       
+        echo "<div class='one'>";
+        echo "<br> First Name : " . $_SESSION['firstname'] . "<br>" . "Surname : " . $_SESSION['surname'] . "<br>" . "Hotel Name : " . $_SESSION['hotelname'] . "<br>" . "Check-In Date : " . $_SESSION['indate'] . "<br>" . "Check-Out Date : " . $_SESSION['outdate'] . "<br>" . $interval->format("%R%a days") . "<br>" . "Total : " . $value . "<br>";
+        echo "<br> <button class='submit2'>Confirm Booking</button>";
+        echo "</div>";
+         
+    } 
 
-        echo "<input type='submit' name='confirm'>";
-        // <form class='form-inline' role='form' action='htmlspecialchars($_SERVER["PHP_SELF"])' method='post'></form>
-
-        if(isset($_POST['confirm'])){
-
-            $stmt = $conn->prepare("INSERT INTO bookings (firstname, surname, hotelname, indate, outdate)
-            VALUES(?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssss", $firstname, $surname, $hotelname, $indate, $outdate);
-
-            $firstname = $_SESSION['firstname'];
-            $surname = $_SESSION['surname'];
-            $hotelname = $_SESSION['hotelname'];
-            $indate = $_SESSION['indate'];
-            $outdate = $_SESSION['outdate'];
-            $stmt->execute();
-            echo "Booking Confirmed.";
-        }
-    }
+       $firstname = $_SESSION['firstname'];
+       $surname = $_SESSION['surname'];
+       $hotelname = $_SESSION['hotelname'];
+       $indate = $_SESSION['indate'];
+       $outdate = $_SESSION['outdate'];
 
 
-    ?>
+    if($_POST){
+    $sql = "INSERT INTO bookings (firstname, surname, hotelname, indate, outdate)
+    VALUES('$firstname','$surname','$hotelname','$indate','$outdate')";
+
+            if($conn->query($sql) === TRUE) {
+                echo "Booking Confirmed";
+                  }else{
+                      echo "Error: " . $sql . "<br>" . $conn->error;
+                  }
+
+                  $conn->close();
+                }
+            
+
+?>
+
+                <div class="book-con">
+            </div>
+            <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+<script type = "text/javascript" src ="main.js"></script>
 </body>
 </html>
